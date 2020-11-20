@@ -44,7 +44,7 @@ export default {
       loginFormRules: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          { min: 5, max: 8, message: '长度在 5 到 8 个字符', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -61,15 +61,15 @@ export default {
     },
     login () {
       // validate 对整个表单进行校验的方法，参数为一个回调函数。该回调函数会在校验结束后被调用，并传入两个参数：是否校验成功和未通过校验的字段。若不传入回调函数，则会返回一个 promise
-      this.$refs.loginFormRef.validate(async valid => {
-        if (!valid) return
+      this.$refs.loginFormRef.validate(async value => {
+        if (!value) return
         const { data: res } = await this.$http.post('login', this.loginForm)
         if (res.meta.status !== 200) return this.$message.error('登陆失败!')
         this.$message.success('登陆成功')
         // 1.登陆成功，保存token到客户端的sessionSTorage中
         // 1.1 项目中出现登陆之外的api接口， 必须登陆后才能访问
         // 1.2 token只能在当前网站打开期间生效，所以将token 保存在 sessionSTorage 中
-        console.log(res)
+        // console.log(res)
         window.sessionStorage.setItem('token', res.data.token)
         // 2. 通过编程式导航跳到后台主页， 路由地址式 /home
         this.$router.push('/home')
